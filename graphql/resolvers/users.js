@@ -1,8 +1,7 @@
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const SALT_ROUNDS = 12;
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../../config");
+const { getToken } = require("../../util/helpers");
 const { UserInputError } = require("apollo-server");
 const {
   validateRegisterInput,
@@ -35,17 +34,7 @@ module.exports = {
       }
 
       // create auth token
-      const token = jwt.sign(
-        {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-        },
-        JWT_SECRET,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const token = getToken(user);
 
       return {
         ...user._doc,
@@ -89,17 +78,7 @@ module.exports = {
       const user = await newUser.save();
 
       // create auth token
-      const token = jwt.sign(
-        {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-        },
-        JWT_SECRET,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const token = getToken(user);
 
       return {
         ...user._doc,
