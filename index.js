@@ -13,7 +13,7 @@ const pubsub = new PubSub();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req, pubsub })  
+  context: ({ req }) => ({ req, pubsub }),
 });
 // added here context to authenticate for protected routes instead of adding to express
 
@@ -25,4 +25,7 @@ mongoose
   })
   .then((res) => {
     console.log(`Server running on port ${res.url}`);
+  })
+  .catch((err) => {
+    console.error(err);
   });
