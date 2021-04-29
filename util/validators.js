@@ -10,7 +10,7 @@ const validateRegisterInput = (username, email, password, confirmPassword) => {
   }
 
   if (!password.trim().length) {
-    errors.password = "Password must not be empty";
+    errors.password = "Password field must not be empty";
   } else {
     if (password !== confirmPassword)
       errors.confirmPassword = "Passwords must match";
@@ -28,7 +28,7 @@ const validateLoginInput = (username, password) => {
   const errors = {};
   if (!username.trim().length)
     errors.username = "Username field must not be empty";
-  if (!password.trim().length) errors.password = "Password must not be empty";
+  if (!password.trim().length) errors.password = "Password field must not be empty";
 
   const valid = Object.keys(errors).length < 1;
 
