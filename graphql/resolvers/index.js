@@ -10,5 +10,12 @@ module.exports = {
     ...usersResolvers.Mutation,
     ...postsResovlers.Mutation,
     ...commentsResolvers.Mutation
+  },
+  // Subscription beta
+  Subscription: {
+    ...postsResovlers.Subscription
+  },
+  Post: {
+    ...postsResovlers.Post
   }
 }

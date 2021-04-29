@@ -1,4 +1,4 @@
-const { ApolloServer } = require("apollo-server");
+const { ApolloServer, PubSub } = require("apollo-server");
 const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 5000;
@@ -7,10 +7,13 @@ const { MONGO_URI } = require("./config");
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
 
+// subscriptions beta
+const pubsub = new PubSub();
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req })  
+  context: ({ req }) => ({ req, pubsub })  
 });
 // added here context to authenticate for protected routes instead of adding to express
 

@@ -9,6 +9,8 @@ type Post {
   createdAt: String!
   comments: [Comment]!
   likes: [Like]!
+  likesCount: Int!
+  commentsCount: Int!
 }
 input RegisterInput {
   username: String!
@@ -51,5 +53,8 @@ type Mutation {
   createComment(postId: ID!, body: String!): Post!
   deleteComment(postId: ID!, commentId: ID!): Post!
   likePost(postId: ID!): Post!
+}
+type Subscription {
+  newPost: Post!
 }
 `;
