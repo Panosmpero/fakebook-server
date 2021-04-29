@@ -7,6 +7,8 @@ type Post {
   body: String!
   username: String!
   createdAt: String!
+  comments: [Comment]!
+  likes: [Like]!
 }
 input RegisterInput {
   username: String!
@@ -25,6 +27,17 @@ type User {
   token: String!
   createdAt: String!
 }
+type Comment {
+  id: ID!
+  username: String!
+  body: String!
+  createdAt: String!
+}
+type Like {
+  id: ID!
+  username: String!
+  createdAt: String!
+}
 
 type Query {
   getPosts: [Post]
@@ -35,5 +48,8 @@ type Mutation {
   login(loginInput: LoginInput): User!
   createPost(body: String!): Post!
   deletePost(postId: ID!): String!
+  createComment(postId: ID!, body: String!): Post!
+  deleteComment(postId: ID!, commentId: ID!): Post!
+  likePost(postId: ID!): Post!
 }
 `;
