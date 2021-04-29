@@ -1,4 +1,4 @@
-const { AuthenticationError } = require("apollo-server");
+const { AuthenticationError, UserInputError } = require("apollo-server");
 const Post = require("../../models/Post");
 const { isAuth } = require("../../util/helpers");
 
@@ -47,15 +47,40 @@ module.exports = {
       try {
         const post = await Post.findById(postId);
         if (post.username === user.username) {
-          await post.delete()
-          return "Post deleted successfully"
+          await post.delete();
+          return "Post deleted successfully";
         } else {
-          throw new AuthenticationError("Action not allowed")
+          throw new AuthenticationError("Action not allowed");
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
+    },
+    likePost: async (_, { postId }, context) => {
+      const user = isAuth(context);
 
-    }
+      try {
+        const post = await Post.findById(postId);
+
+        if (post) {
+          if (post.likes.find((like) => like.username === user.username)) {
+            // remove like
+            post.likes = post.likes.filter(
+              (like) => like.username !== user.username
+            );
+          } else {
+            // add like
+            post.likes.push({
+              username: user.username,
+              createdAt: new Date().toISOString(),
+            });
+          }
+          await post.save();
+          return post;
+        } else throw new UserInputError("Post not found");
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
 };
