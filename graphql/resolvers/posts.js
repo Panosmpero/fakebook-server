@@ -1,3 +1,4 @@
+const { AuthenticationError } = require("apollo-server");
 const Post = require("../../models/Post");
 const { isAuth } = require("../../util/helpers");
 
@@ -40,5 +41,21 @@ module.exports = {
 
       return post;
     },
+    deletePost: async (_, { postId }, context) => {
+      const user = isAuth(context);
+      // check if the user is the creator of the post
+      try {
+        const post = await Post.findById(postId);
+        if (post.username === user.username) {
+          await post.delete()
+          return "Post deleted successfully"
+        } else {
+          throw new AuthenticationError("Action not allowed")
+        }
+      } catch (error) {
+        throw new Error(error)
+      }
+
+    }
   },
 };
