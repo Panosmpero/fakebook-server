@@ -4,7 +4,8 @@ const commentsResolvers = require("./comments");
 
 module.exports = {
   Query: {
-    ...postsResovlers.Query
+    ...postsResovlers.Query,
+    ...usersResolvers.Query
   },
   Mutation: {
     ...usersResolvers.Mutation,

@@ -9,6 +9,16 @@ const {
 } = require("../../util/validators");
 
 module.exports = {
+  Query: {
+    getUsers: async () => {
+      try {
+        const users = await User.find();
+        return users;
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  },
   Mutation: {
     login: async (parent, args, context, info) => {
       const {
